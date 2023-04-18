@@ -25,6 +25,8 @@ class Product < ApplicationRecord
   validates :price, numericality: { greater_than_or_equal_to: 0.01 }, if: :price, comparison: { greater_than: :discount_price }, price: true
   validates :permalink, presence: true, uniqueness: true, format: { with: /\A[a-z0-9\-]+\z/, message: "must contain only lowercase letters, digits, and hyphens" }, permalink: true
   validates :description, description: true
+  after_initialize :give_default_title, unless: :title
+  before_validation :set_default_discount_price, unless: :discount_price
   private
 
     # ensure that there are no line items referencing this product
@@ -33,5 +35,13 @@ class Product < ApplicationRecord
         errors.add(:base, 'Line Items present')
         throw :abort
       end
+    end
+
+    def give_default_title
+      self.title='abc'
+    end
+
+    def set_default_discount_price
+      self.discount_price = self.price
     end
 end
