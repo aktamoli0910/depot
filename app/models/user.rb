@@ -7,9 +7,11 @@
 # Visit http://www.pragmaticprogrammer.com/titles/rails6 for more book information.
 #---
 class User < ApplicationRecord
+  ADMIN_EMAIL = 'admin@depot.com'
+  VALID_EMAIL_FORMAT = /\A[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+\z/
   validates :name, presence: true, uniqueness: true
   has_secure_password
-  validates :email, presence: true, uniqueness: true, format: { with: /\A[a-zA-Z0-9+_.-]+@[a-zA-Z0-9.-]+\z/, message: "is not in the standard email format" }
+  validates :email, presence: true, uniqueness: true, format: { with: VALID_EMAIL_FORMAT, message: "is not in the standard email format" }
 
   after_destroy :ensure_an_admin_remains
   after_create_commit :send_welcome_email
@@ -30,14 +32,14 @@ class User < ApplicationRecord
     end
 
     def check_if_admin_destroyed
-      if email == 'admin@depot.com'
+      if email == ADMIN_EMAIL
         errors.add :base, "Cannot destroy admin user"
         throw :abort
       end
     end
 
     def check_if_admin_updated
-      if email == 'admin@depot.com'
+      if email == ADMIN_EMAIL
         errors.add :base, "Cannot update admin user"
         throw :abort
       end
