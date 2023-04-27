@@ -17,6 +17,8 @@ class User < ApplicationRecord
   after_create_commit :send_welcome_email
   before_destroy :check_if_admin_destroyed
   before_update :check_if_admin_updated
+  has_many :orders
+  has_many :line_items, through: :orders
   class Error < StandardError
   end
 

@@ -30,6 +30,14 @@ class UsersController < ApplicationController
   def edit
   end
 
+  def orders
+    @user = User.find(session[:user_id])
+  end
+
+  def line_items
+    @user = User.find(session[:user_id])
+    @line_items = @user.line_items
+  end
   # POST /users
   # POST /users.json
   def create
