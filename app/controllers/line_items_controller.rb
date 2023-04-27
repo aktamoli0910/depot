@@ -17,6 +17,9 @@ class LineItemsController < ApplicationController
   def index
     @line_items = LineItem.all
   end
+  # def index
+  #   @line_items = LineItem.page params[:page]
+  # end
 
   # GET /line_items/1
   # GET /line_items/1.json

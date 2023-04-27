@@ -14,10 +14,14 @@ Rails.application.routes.draw do
     delete 'logout' => :destroy
   end
 
-  resources :users
+  get 'users/orders', to: 'users#orders'
+  get 'users/line_items', to: 'users#line_items'
+
   resources :products do
     get :who_bought, on: :member
   end
+  
+  resources :users
 
   resources :support_requests, only: [ :index, :update ]
 
