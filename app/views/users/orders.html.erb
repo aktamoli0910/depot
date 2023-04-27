@@ -1,0 +1,22 @@
+<% total = 0%>
+<%order_count=0%>
+<% @user.orders.each do |order|%>
+<%order_count+=1%>
+<h1><%="ORDER #{order_count}"%></h1>
+<h3>Id</h3>
+<%= order.id%>
+<h3>Name</h3>
+<%= order.name%>
+<h3>Address</h3>
+<%= order.address%>
+<h3>Email</h3>
+<%= order.email%>
+<h3>Pay Type</h3>
+<%= order.pay_type%>
+<% order.line_items.each do |line_item| %>
+<%total+=Product.find(line_item.product_id).price%>
+<%end%>
+<h3>Total Price</h3>
+<%="total price is: #{total}"%>
+<br><br><br>
+<%end%>
