@@ -31,6 +31,10 @@ class Product < ApplicationRecord
   after_initialize :give_default_title, unless: :title
   before_validation :set_default_discount_price, unless: :discount_price
   around_save :print_around_save
+
+  scope :enabled?, -> { where enabled: true }
+  scope :present_in_atleast_one_line_item, ->{ Product.joins(:line_items).distinct }
+  scope :titles_present_in_atleast_one_line_item, ->{ present_in_atleast_one_line_item.pluck(:title) }
   private
 
     # ensure that there are no line items referencing this product
